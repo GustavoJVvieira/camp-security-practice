@@ -1,6 +1,12 @@
 // migrations/create-user.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../sequelize');
+const bcrypt = require("bcrypt");
+
+User.beforeCreate(async (user) => {
+  const hashedPassword = await bcrypt.hash(user.password, 10);
+  user.password = hashedPassword;
+});
 
 module.exports = {
   up: async (queryInterface) => {
